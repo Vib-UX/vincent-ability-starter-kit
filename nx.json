@@ -49,7 +49,14 @@
     "libsDir": "packages"
   },
   "release": {
-    "projects": ["ability-native-send", "policy-counter", "test-e2e"],
+    "projects": [
+      "ability-native-send",
+      "ability-lightning-payment",
+      "ability-lightning-invoice",
+      "ability-hedera-htlc",
+      "policy-counter",
+      "test-e2e"
+    ],
     "projectsRelationship": "independent",
     "releaseTagPattern": "vincent/{projectName}/{version}",
     "versionPlans": true,
