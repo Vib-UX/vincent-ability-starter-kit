@@ -1,0 +1,58 @@
+{
+  "name": "ability-lightning-invoice",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/ability-lightning-invoice/src",
+  "projectType": "library",
+  "targets": {
+    "clean": {},
+    "action:build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["node ./scripts/bundle-vincent-ability/esbuild.cjs"],
+        "cwd": "packages/ability-lightning-invoice",
+        "parallel": false
+      }
+    },
+    "action:only:deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["node scripts/deploy-lit-action.cjs"],
+        "cwd": "{projectRoot}"
+      }
+    },
+    "action:deploy": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["action:build"],
+      "options": {
+        "commands": ["node scripts/deploy-lit-action.cjs"],
+        "cwd": "packages/ability-lightning-invoice"
+      }
+    },
+    "build": {
+      "executor": "@nx/js:tsc",
+      "dependsOn": ["action:build"],
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "packages/ability-lightning-invoice/dist",
+        "main": "packages/ability-lightning-invoice/src/index.ts",
+        "tsConfig": "packages/ability-lightning-invoice/tsconfig.lib.json",
+        "assets": [
+          "packages/ability-lightning-invoice/*.md",
+          {
+            "glob": "**/*",
+            "input": "packages/ability-lightning-invoice/src/generated",
+            "output": "src/generated"
+          }
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "{projectRoot}/jest.config.cjs",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
